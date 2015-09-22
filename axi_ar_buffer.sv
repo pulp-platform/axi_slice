@@ -92,7 +92,7 @@ module axi_ar_buffer
    
 
 
-`ifdef USE_GENERIC_FIFO
+
    generic_fifo 
    #( 
       .DATA_WIDTH ( 29+ADDR_WIDTH+USER_WIDTH+ID_WIDTH ),
@@ -100,32 +100,15 @@ module axi_ar_buffer
    )
    buffer_i
    (
-      .clk       ( clk_i           ),
-      .rst_n     ( rst_ni          ),
-      .DATA_IN   ( s_data_in       ),
-      .VALID_IN  ( slave_valid_i   ),
-      .GRANT_OUT ( slave_ready_o   ),
-      .DATA_OUT  ( s_data_out      ),
-      .VALID_OUT ( master_valid_o  ),
-      .GRANT_IN  ( master_ready_i  ),
-      .test_en_i ( test_en_i       )
+      .clk            ( clk_i           ),
+      .rst_n          ( rst_ni          ),
+      .data_i         ( s_data_in       ),
+      .valid_i        ( slave_valid_i   ),
+      .grant_o        ( slave_ready_o   ),
+      .data_o         ( s_data_out      ),
+      .valid_o        ( master_valid_o  ),
+      .grant_i        ( master_ready_i  ),
+      .test_mode_i    ( test_en_i       )
    );
-`else
-   axi_buffer
-     #(
-       .DATA_WIDTH(29+ADDR_WIDTH+USER_WIDTH+ID_WIDTH),
-       .BUFFER_DEPTH(BUFFER_DEPTH)
-       )
-   buffer_i
-     (
-      .clk_i(clk_i),
-      .rst_ni(rst_ni),
-      .valid_o(master_valid_o),
-      .data_o(s_data_out),
-      .ready_i(master_ready_i),
-      .valid_i(slave_valid_i),
-      .data_i(s_data_in),
-      .ready_o(slave_ready_o)
-      );
-`endif   
+
 endmodule

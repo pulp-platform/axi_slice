@@ -89,7 +89,7 @@ module axi_aw_buffer
    assign s_data_in = {slave_cache_i,  slave_prot_i,  slave_lock_i,  slave_burst_i,  slave_size_i,  slave_len_i,  slave_qos_i,  slave_region_i,  slave_addr_i,  slave_user_i,  slave_id_i};
    assign             {master_cache_o, master_prot_o, master_lock_o, master_burst_o, master_size_o, master_len_o, master_qos_o, master_region_o, master_addr_o, master_user_o, master_id_o} = s_data_out;
 
-`ifdef USE_GENERIC_FIFO
+
    generic_fifo 
    #( 
       .DATA_WIDTH ( 29+ADDR_WIDTH+USER_WIDTH+ID_WIDTH ),
@@ -97,33 +97,16 @@ module axi_aw_buffer
    )
    buffer_i
    (
-      .clk       ( clk_i           ),
-      .rst_n     ( rst_ni          ),
-      .DATA_IN   ( s_data_in       ),
-      .VALID_IN  ( slave_valid_i   ),
-      .GRANT_OUT ( slave_ready_o   ),
-      .DATA_OUT  ( s_data_out      ),
-      .VALID_OUT ( master_valid_o  ),
-      .GRANT_IN  ( master_ready_i  ),
-      .test_en_i ( test_en_i       )
+      .clk           ( clk_i           ),
+      .rst_n         ( rst_ni          ),
+      .data_i        ( s_data_in       ),
+      .valid_i       ( slave_valid_i   ),
+      .grant_o       ( slave_ready_o   ),
+      .data_o        ( s_data_out      ),
+      .valid_o       ( master_valid_o  ),
+      .grant_i       ( master_ready_i  ),
+      .test_mode_i   ( test_en_i       )
    );
-`else
-   axi_buffer
-   #(
-      .DATA_WIDTH(29+ADDR_WIDTH+USER_WIDTH+ID_WIDTH),
-      .BUFFER_DEPTH(BUFFER_DEPTH)
-   )
-   buffer_i
-   (
-      .clk_i(clk_i),
-      .rst_ni(rst_ni),
-      .valid_o(master_valid_o),
-      .data_o(s_data_out),
-      .ready_i(master_ready_i),
-      .valid_i(slave_valid_i),
-      .data_i(s_data_in),
-      .ready_o(slave_ready_o)
-   );
-`endif
+
 
 endmodule
