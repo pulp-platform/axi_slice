@@ -1,13 +1,12 @@
-// ============================================================================= //
-//                           COPYRIGHT NOTICE                                    //
-// Copyright 2014 Multitherman Laboratory - University of Bologna                //
-// ALL RIGHTS RESERVED                                                           //
-// This confidential and proprietary software may be used only as authorised by  //
-// a licensing agreement from Multitherman Laboratory - University of Bologna.   //
-// The entire notice above must be reproduced on all authorized copies and       //
-// copies may only be made to the extent permitted by a licensing agreement from //
-// Multitherman Laboratory - University of Bologna.                              //
-// ============================================================================= //
+// Copyright 2015 ETH Zurich and University of Bologna.
+// Copyright and related rights are licensed under the Solderpad Hardware
+// License, Version 0.51 (the “License”); you may not use this file except in
+// compliance with the License.  You may obtain a copy of the License at
+// http://solderpad.org/licenses/SHL-0.51. Unless required by applicable law
+// or agreed to in writing, software, hardware and materials distributed under
+// this License is distributed on an “AS IS” BASIS, WITHOUT WARRANTIES OR
+// CONDITIONS OF ANY KIND, either express or implied. See the License for the
+// specific language governing permissions and limitations under the License.
 
 // ============================================================================= //
 // Company:        Multitherman Laboratory @ DEIS - University of Bologna        //
@@ -68,7 +67,7 @@ module axi_r_buffer
    output logic                  master_last_o,
    input  logic                  master_ready_i
 );
-   
+
    logic [2+DATA_WIDTH+USER_WIDTH+ID_WIDTH:0] s_data_in;
    logic [2+DATA_WIDTH+USER_WIDTH+ID_WIDTH:0] s_data_out;
 
@@ -77,8 +76,8 @@ module axi_r_buffer
    assign              {master_id_o, master_user_o, master_data_o, master_resp_o, master_last_o} = s_data_out;
 
 
-   generic_fifo 
-   #( 
+   generic_fifo
+   #(
       .DATA_WIDTH ( 3+DATA_WIDTH+USER_WIDTH+ID_WIDTH ),
       .DATA_DEPTH ( BUFFER_DEPTH                     )
    )

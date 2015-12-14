@@ -1,13 +1,12 @@
-// ============================================================================= //
-//                           COPYRIGHT NOTICE                                    //
-// Copyright 2014 Multitherman Laboratory - University of Bologna                //
-// ALL RIGHTS RESERVED                                                           //
-// This confidential and proprietary software may be used only as authorised by  //
-// a licensing agreement from Multitherman Laboratory - University of Bologna.   //
-// The entire notice above must be reproduced on all authorized copies and       //
-// copies may only be made to the extent permitted by a licensing agreement from //
-// Multitherman Laboratory - University of Bologna.                              //
-// ============================================================================= //
+// Copyright 2015 ETH Zurich and University of Bologna.
+// Copyright and related rights are licensed under the Solderpad Hardware
+// License, Version 0.51 (the “License”); you may not use this file except in
+// compliance with the License.  You may obtain a copy of the License at
+// http://solderpad.org/licenses/SHL-0.51. Unless required by applicable law
+// or agreed to in writing, software, hardware and materials distributed under
+// this License is distributed on an “AS IS” BASIS, WITHOUT WARRANTIES OR
+// CONDITIONS OF ANY KIND, either express or implied. See the License for the
+// specific language governing permissions and limitations under the License.
 
 // ============================================================================= //
 // Company:        Multitherman Laboratory @ DEIS - University of Bologna        //
@@ -53,7 +52,7 @@ module axi_slice
     input  logic                      clk_i,
     input  logic                      rst_ni,
     input  logic                      test_en_i,
-    
+
     // AXI4 SLAVE
     //***************************************
     // WRITE ADDRESS CHANNEL
@@ -70,7 +69,7 @@ module axi_slice
     input  logic [AXI_ID_WIDTH-1:0]   axi_slave_aw_id_i,
     input  logic [AXI_USER_WIDTH-1:0] axi_slave_aw_user_i,
     output logic                      axi_slave_aw_ready_o,
-    
+
     // READ ADDRESS CHANNEL
     input  logic                      axi_slave_ar_valid_i,
     input  logic [AXI_ADDR_WIDTH-1:0] axi_slave_ar_addr_i,
@@ -85,7 +84,7 @@ module axi_slice
     input  logic [AXI_ID_WIDTH-1:0]   axi_slave_ar_id_i,
     input  logic [AXI_USER_WIDTH-1:0] axi_slave_ar_user_i,
     output logic                      axi_slave_ar_ready_o,
-    
+
     // WRITE DATA CHANNEL
     input  logic                      axi_slave_w_valid_i,
     input  logic [AXI_DATA_WIDTH-1:0] axi_slave_w_data_i,
@@ -93,7 +92,7 @@ module axi_slice
     input  logic [AXI_USER_WIDTH-1:0] axi_slave_w_user_i,
     input  logic                      axi_slave_w_last_i,
     output logic                      axi_slave_w_ready_o,
-    
+
     // READ DATA CHANNEL
     output logic                      axi_slave_r_valid_o,
     output logic [AXI_DATA_WIDTH-1:0] axi_slave_r_data_o,
@@ -102,7 +101,7 @@ module axi_slice
     output logic [AXI_ID_WIDTH-1:0]   axi_slave_r_id_o,
     output logic [AXI_USER_WIDTH-1:0] axi_slave_r_user_o,
     input  logic                      axi_slave_r_ready_i,
-    
+
     // WRITE RESPONSE CHANNEL
     output logic                      axi_slave_b_valid_o,
     output logic [1:0]                axi_slave_b_resp_o,
@@ -126,7 +125,7 @@ module axi_slice
     output logic [AXI_ID_WIDTH-1:0]   axi_master_aw_id_o,
     output logic [AXI_USER_WIDTH-1:0] axi_master_aw_user_o,
     input  logic                      axi_master_aw_ready_i,
-    
+
     // READ ADDRESS CHANNEL
     output logic                      axi_master_ar_valid_o,
     output logic [AXI_ADDR_WIDTH-1:0] axi_master_ar_addr_o,
@@ -141,7 +140,7 @@ module axi_slice
     output logic [AXI_ID_WIDTH-1:0]   axi_master_ar_id_o,
     output logic [AXI_USER_WIDTH-1:0] axi_master_ar_user_o,
     input  logic                      axi_master_ar_ready_i,
-    
+
     // WRITE DATA CHANNEL
     output logic                      axi_master_w_valid_o,
     output logic [AXI_DATA_WIDTH-1:0] axi_master_w_data_o,
@@ -149,7 +148,7 @@ module axi_slice
     output logic [AXI_USER_WIDTH-1:0] axi_master_w_user_o,
     output logic                      axi_master_w_last_o,
     input  logic                      axi_master_w_ready_i,
-    
+
     // READ DATA CHANNEL
     input  logic                      axi_master_r_valid_i,
     input  logic [AXI_DATA_WIDTH-1:0] axi_master_r_data_i,
@@ -158,7 +157,7 @@ module axi_slice
     input  logic [AXI_ID_WIDTH-1:0]   axi_master_r_id_i,
     input  logic [AXI_USER_WIDTH-1:0] axi_master_r_user_i,
     output logic                      axi_master_r_ready_o,
-    
+
     // WRITE RESPONSE CHANNEL
     input  logic                      axi_master_b_valid_i,
     input  logic [1:0]                axi_master_b_resp_i,
@@ -166,21 +165,21 @@ module axi_slice
     input  logic [AXI_USER_WIDTH-1:0] axi_master_b_user_i,
     output logic                      axi_master_b_ready_o
 );
-   
+
    // AXI WRITE ADDRESS CHANNEL BUFFER
    axi_aw_buffer
    #(
        .ID_WIDTH     (AXI_ID_WIDTH),
        .ADDR_WIDTH   (AXI_ADDR_WIDTH),
        .USER_WIDTH   (AXI_USER_WIDTH),
-       .BUFFER_DEPTH (SLICE_DEPTH) 
+       .BUFFER_DEPTH (SLICE_DEPTH)
    )
    aw_buffer_i
    (
       .clk_i            ( clk_i                  ),
       .rst_ni           ( rst_ni                 ),
       .test_en_i        ( test_en_i              ),
-      
+
       .slave_valid_i    ( axi_slave_aw_valid_i   ),
       .slave_addr_i     ( axi_slave_aw_addr_i    ),
       .slave_prot_i     ( axi_slave_aw_prot_i    ),
@@ -194,7 +193,7 @@ module axi_slice
       .slave_id_i       ( axi_slave_aw_id_i      ),
       .slave_user_i     ( axi_slave_aw_user_i    ),
       .slave_ready_o    ( axi_slave_aw_ready_o   ),
-      
+
       .master_valid_o   ( axi_master_aw_valid_o  ),
       .master_addr_o    ( axi_master_aw_addr_o   ),
       .master_prot_o    ( axi_master_aw_prot_o   ),
@@ -209,21 +208,21 @@ module axi_slice
       .master_user_o    ( axi_master_aw_user_o   ),
       .master_ready_i   ( axi_master_aw_ready_i  )
    );
-   
+
    // AXI READ ADDRESS CHANNEL BUFFER
    axi_ar_buffer
    #(
        .ID_WIDTH     (AXI_ID_WIDTH),
        .ADDR_WIDTH   (AXI_ADDR_WIDTH),
        .USER_WIDTH   (AXI_USER_WIDTH),
-       .BUFFER_DEPTH (SLICE_DEPTH) 
+       .BUFFER_DEPTH (SLICE_DEPTH)
    )
    ar_buffer_i
    (
       .clk_i           ( clk_i                   ),
       .rst_ni          ( rst_ni                  ),
       .test_en_i       ( test_en_i               ),
-      
+
       .slave_valid_i   ( axi_slave_ar_valid_i    ),
       .slave_addr_i    ( axi_slave_ar_addr_i     ),
       .slave_prot_i    ( axi_slave_ar_prot_i     ),
@@ -237,7 +236,7 @@ module axi_slice
       .slave_id_i      ( axi_slave_ar_id_i       ),
       .slave_user_i    ( axi_slave_ar_user_i     ),
       .slave_ready_o   ( axi_slave_ar_ready_o    ),
-      
+
       .master_valid_o  ( axi_master_ar_valid_o   ),
       .master_addr_o   ( axi_master_ar_addr_o    ),
       .master_prot_o   ( axi_master_ar_prot_o    ),
@@ -252,27 +251,27 @@ module axi_slice
       .master_user_o   ( axi_master_ar_user_o    ),
       .master_ready_i  ( axi_master_ar_ready_i   )
    );
-   
+
    // WRITE DATA CHANNEL BUFFER
    axi_w_buffer
    #(
        .DATA_WIDTH   (AXI_DATA_WIDTH),
        .USER_WIDTH   (AXI_USER_WIDTH),
-       .BUFFER_DEPTH (SLICE_DEPTH)       
+       .BUFFER_DEPTH (SLICE_DEPTH)
    )
    w_buffer_i
    (
       .clk_i          ( clk_i                 ),
       .rst_ni         ( rst_ni                ),
       .test_en_i      ( test_en_i             ),
-      
+
       .slave_valid_i  ( axi_slave_w_valid_i   ),
       .slave_data_i   ( axi_slave_w_data_i    ),
       .slave_strb_i   ( axi_slave_w_strb_i    ),
       .slave_user_i   ( axi_slave_w_user_i    ),
       .slave_last_i   ( axi_slave_w_last_i    ),
       .slave_ready_o  ( axi_slave_w_ready_o   ),
-      
+
       .master_valid_o ( axi_master_w_valid_o  ),
       .master_data_o  ( axi_master_w_data_o   ),
       .master_strb_o  ( axi_master_w_strb_o   ),
@@ -280,21 +279,21 @@ module axi_slice
       .master_last_o  ( axi_master_w_last_o   ),
       .master_ready_i ( axi_master_w_ready_i  )
    );
-   
+
    // READ DATA CHANNEL BUFFER
    axi_r_buffer
    #(
        .ID_WIDTH     (AXI_ID_WIDTH),
        .DATA_WIDTH   (AXI_DATA_WIDTH),
        .USER_WIDTH   (AXI_USER_WIDTH),
-       .BUFFER_DEPTH (SLICE_DEPTH)       
+       .BUFFER_DEPTH (SLICE_DEPTH)
    )
    r_buffer_i
    (
       .clk_i           ( clk_i                 ),
       .rst_ni          ( rst_ni                ),
       .test_en_i       ( test_en_i             ),
-      
+
       .slave_valid_i   ( axi_master_r_valid_i  ),
       .slave_data_i    ( axi_master_r_data_i   ),
       .slave_resp_i    ( axi_master_r_resp_i   ),
@@ -302,7 +301,7 @@ module axi_slice
       .slave_id_i      ( axi_master_r_id_i     ),
       .slave_last_i    ( axi_master_r_last_i   ),
       .slave_ready_o   ( axi_master_r_ready_o  ),
-      
+
       .master_valid_o  ( axi_slave_r_valid_o   ),
       .master_data_o   ( axi_slave_r_data_o    ),
       .master_resp_o   ( axi_slave_r_resp_o    ),
@@ -311,31 +310,31 @@ module axi_slice
       .master_last_o   ( axi_slave_r_last_o    ),
       .master_ready_i  ( axi_slave_r_ready_i   )
    );
-   
+
    // WRITE RESPONSE CHANNEL BUFFER
    axi_b_buffer
    #(
        .ID_WIDTH     (AXI_ID_WIDTH),
        .USER_WIDTH   (AXI_USER_WIDTH),
-       .BUFFER_DEPTH (SLICE_DEPTH)       
+       .BUFFER_DEPTH (SLICE_DEPTH)
    )
    b_buffer_i
    (
       .clk_i           ( clk_i                 ),
       .rst_ni          ( rst_ni                ),
       .test_en_i       ( test_en_i             ),
-      
+
       .slave_valid_i   ( axi_master_b_valid_i  ),
       .slave_resp_i    ( axi_master_b_resp_i   ),
       .slave_id_i      ( axi_master_b_id_i     ),
       .slave_user_i    ( axi_master_b_user_i   ),
       .slave_ready_o   ( axi_master_b_ready_o  ),
-      
+
       .master_valid_o  ( axi_slave_b_valid_o   ),
       .master_resp_o   ( axi_slave_b_resp_o    ),
       .master_id_o     ( axi_slave_b_id_o      ),
       .master_user_o   ( axi_slave_b_user_o    ),
       .master_ready_i  ( axi_slave_b_ready_i   )
    );
-   
+
 endmodule

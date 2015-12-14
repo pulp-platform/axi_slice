@@ -1,13 +1,12 @@
-// ============================================================================= //
-//                           COPYRIGHT NOTICE                                    //
-// Copyright 2014 Multitherman Laboratory - University of Bologna                //
-// ALL RIGHTS RESERVED                                                           //
-// This confidential and proprietary software may be used only as authorised by  //
-// a licensing agreement from Multitherman Laboratory - University of Bologna.   //
-// The entire notice above must be reproduced on all authorized copies and       //
-// copies may only be made to the extent permitted by a licensing agreement from //
-// Multitherman Laboratory - University of Bologna.                              //
-// ============================================================================= //
+// Copyright 2015 ETH Zurich and University of Bologna.
+// Copyright and related rights are licensed under the Solderpad Hardware
+// License, Version 0.51 (the “License”); you may not use this file except in
+// compliance with the License.  You may obtain a copy of the License at
+// http://solderpad.org/licenses/SHL-0.51. Unless required by applicable law
+// or agreed to in writing, software, hardware and materials distributed under
+// this License is distributed on an “AS IS” BASIS, WITHOUT WARRANTIES OR
+// CONDITIONS OF ANY KIND, either express or implied. See the License for the
+// specific language governing permissions and limitations under the License.
 
 // ============================================================================= //
 // Company:        Multitherman Laboratory @ DEIS - University of Bologna        //
@@ -57,19 +56,19 @@ module axi_buffer
    input  logic [DATA_WIDTH-1 : 0] data_i,
    output logic                    ready_o
 );
-   
+
    // Internal data structures
    logic [LOG_BUFFER_DEPTH-1:0]     pointer_in;  // location to which we last wrote
    logic [LOG_BUFFER_DEPTH-1:0]     pointer_out; // location from which we last sent
    logic [LOG_BUFFER_DEPTH:0]       elements;    // number of elements in the buffer
    logic [DATA_WIDTH-1:0]           buffer [BUFFER_DEPTH - 1 : 0];
-   
+
    wire            full;
-   
+
    int unsigned    loop1;
-   
+
    assign full = (elements == BUFFER_DEPTH);
-   
+
    always @(posedge clk_i or negedge rst_ni)
      begin: elements_sequential
         if (rst_ni == 1'b0)
@@ -88,7 +87,7 @@ module axi_buffer
              // Else, either one out and one in, or none out and none in - stays unchanged
           end
      end
-   
+
    always @(posedge clk_i or negedge rst_ni)
    begin: buffers_sequential
       if (rst_ni == 1'b0)
@@ -103,7 +102,7 @@ module axi_buffer
             buffer[pointer_in] <= data_i;
       end
    end
-   
+
    always @(posedge clk_i or negedge rst_ni)
    begin: sequential
         if (rst_ni == 1'b0)
@@ -125,7 +124,7 @@ module axi_buffer
                    pointer_in <= pointer_in + 1;
              end
              // Else we don't have any input, the input pointer stays the same
-        
+
              // -------------------------------------
              // Check what to do with the output side
              // -------------------------------------
@@ -140,11 +139,11 @@ module axi_buffer
              // Else stay on the same output location
         end
    end
-   
+
    // Update output ports
    assign data_o  = buffer[pointer_out];
    assign valid_o = (elements != 0);
-   
+
    assign ready_o = ~full;
-   
+
 endmodule
