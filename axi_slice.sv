@@ -58,7 +58,7 @@ module axi_slice
     // WRITE ADDRESS CHANNEL
     input  logic                      axi_slave_aw_valid_i,
     input  logic [AXI_ADDR_WIDTH-1:0] axi_slave_aw_addr_i,
-    input  logic [3:0]                axi_slave_aw_prot_i,
+    input  logic [2:0]                axi_slave_aw_prot_i,
     input  logic [3:0]                axi_slave_aw_region_i,
     input  logic [7:0]                axi_slave_aw_len_i,
     input  logic [2:0]                axi_slave_aw_size_i,
@@ -73,7 +73,7 @@ module axi_slice
     // READ ADDRESS CHANNEL
     input  logic                      axi_slave_ar_valid_i,
     input  logic [AXI_ADDR_WIDTH-1:0] axi_slave_ar_addr_i,
-    input  logic [3:0]                axi_slave_ar_prot_i,
+    input  logic [2:0]                axi_slave_ar_prot_i,
     input  logic [3:0]                axi_slave_ar_region_i,
     input  logic [7:0]                axi_slave_ar_len_i,
     input  logic [2:0]                axi_slave_ar_size_i,
@@ -114,7 +114,7 @@ module axi_slice
     // WRITE ADDRESS CHANNEL
     output logic                      axi_master_aw_valid_o,
     output logic [AXI_ADDR_WIDTH-1:0] axi_master_aw_addr_o,
-    output logic [3:0]                axi_master_aw_prot_o,
+    output logic [2:0]                axi_master_aw_prot_o,
     output logic [3:0]                axi_master_aw_region_o,
     output logic [7:0]                axi_master_aw_len_o,
     output logic [2:0]                axi_master_aw_size_o,
@@ -129,7 +129,7 @@ module axi_slice
     // READ ADDRESS CHANNEL
     output logic                      axi_master_ar_valid_o,
     output logic [AXI_ADDR_WIDTH-1:0] axi_master_ar_addr_o,
-    output logic [3:0]                axi_master_ar_prot_o,
+    output logic [2:0]                axi_master_ar_prot_o,
     output logic [3:0]                axi_master_ar_region_o,
     output logic [7:0]                axi_master_ar_len_o,
     output logic [2:0]                axi_master_ar_size_o,
