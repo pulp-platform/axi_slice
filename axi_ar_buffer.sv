@@ -53,7 +53,7 @@ module axi_ar_buffer
 
     input  logic                  slave_valid_i,
     input  logic [ADDR_WIDTH-1:0] slave_addr_i,
-    input  logic [2:0]            slave_prot_i,
+    input  logic [3:0]            slave_prot_i,
     input  logic [3:0]            slave_region_i,
     input  logic [7:0]            slave_len_i,
     input  logic [2:0]            slave_size_i,
@@ -67,7 +67,7 @@ module axi_ar_buffer
 
     output logic                  master_valid_o,
     output logic [ADDR_WIDTH-1:0] master_addr_o,
-    output logic [2:0]            master_prot_o,
+    output logic [3:0]            master_prot_o,
     output logic [3:0]            master_region_o,
     output logic [7:0]            master_len_o,
     output logic [2:0]            master_size_o,
@@ -81,8 +81,9 @@ module axi_ar_buffer
 
 );
 
-   logic [29+ADDR_WIDTH+USER_WIDTH+ID_WIDTH-1:0] s_data_in;
-   logic [29+ADDR_WIDTH+USER_WIDTH+ID_WIDTH-1:0] s_data_out;
+   localparam DATA_WIDTH = 30+ADDR_WIDTH+USER_WIDTH+ID_WIDTH;
+   logic [DATA_WIDTH-1:0] s_data_in;
+   logic [DATA_WIDTH-1:0] s_data_out;
 
    assign s_data_in = {slave_cache_i,  slave_prot_i,  slave_lock_i,  slave_burst_i,  slave_size_i,  slave_len_i,  slave_qos_i,  slave_region_i,  slave_addr_i,  slave_user_i,  slave_id_i} ;
    assign             {master_cache_o, master_prot_o, master_lock_o, master_burst_o, master_size_o, master_len_o, master_qos_o, master_region_o, master_addr_o, master_user_o, master_id_o} =  s_data_out;
@@ -92,8 +93,8 @@ module axi_ar_buffer
 
    generic_fifo
    #(
-      .DATA_WIDTH ( 29+ADDR_WIDTH+USER_WIDTH+ID_WIDTH ),
-      .DATA_DEPTH ( BUFFER_DEPTH                      )
+      .DATA_WIDTH ( DATA_WIDTH           ),
+      .DATA_DEPTH ( BUFFER_DEPTH         )
    )
    buffer_i
    (
