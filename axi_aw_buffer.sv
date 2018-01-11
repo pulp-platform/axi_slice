@@ -1,4 +1,4 @@
-// Copyright 2015 ETH Zurich and University of Bologna.
+// Copyright 2018 ETH Zurich and University of Bologna.
 // Copyright and related rights are licensed under the Solderpad Hardware
 // License, Version 0.51 (the “License”); you may not use this file except in
 // compliance with the License.  You may obtain a copy of the License at
@@ -8,35 +8,7 @@
 // CONDITIONS OF ANY KIND, either express or implied. See the License for the
 // specific language governing permissions and limitations under the License.
 
-// ============================================================================= //
-// Company:        Multitherman Laboratory @ DEIS - University of Bologna        //
-//                    Viale Risorgimento 2 40136                                 //
-//                    Bologna - fax 0512093785 -                                 //
-//                                                                               //
-// Engineer:       Davide Rossi - davide.rossi@unibo.it                          //
-//                                                                               //
-//                                                                               //
-// Additional contributions by:                                                  //
-//                                                                               //
-//                                                                               //
-//                                                                               //
-// Create Date:    01/02/2014                                                    //
-// Design Name:    AXI 4 INTERCONNECT                                            //
-// Module Name:    axi_aw_buffer                                                 //
-// Project Name:   PULP                                                          //
-// Language:       SystemVerilog                                                 //
-//                                                                               //
-// Description:   master slice ( FIFO wrapper  ) for address write channel       //
-//                                                                               //
-// Revision:                                                                     //
-// Revision v0.1 - 01/02/2014 : File Created                                     //
-//                                                                               //
-//                                                                               //
-//                                                                               //
-//                                                                               //
-//                                                                               //
-//                                                                               //
-// ============================================================================= //
+// Davide Rossi <davide.rossi@unibo.it>
 
 module axi_aw_buffer
 #(
