@@ -7,4 +7,5 @@ axi_slice:
     axi_r_buffer.sv,
     axi_slice.sv,
     axi_w_buffer.sv,
+    axi_slice_wrap.sv,
   ]
