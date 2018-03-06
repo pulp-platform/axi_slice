@@ -2,14 +2,14 @@ package:
   name: axi_slice
 
 dependencies:
-  common_cells: { git: "git@iis-git.ee.ethz.ch:pulp-open/common_cells.git", version: 0.1.0 }
+  common_cells: { git: "git@iis-git.ee.ethz.ch:sasa/common_cells.git", version: 1.0.0 }
 
 sources:
-  - axi_ar_buffer.sv
-  - axi_aw_buffer.sv
-  - axi_b_buffer.sv
-  - axi_buffer.sv
-  - axi_r_buffer.sv
-  - axi_slice.sv
-  - axi_w_buffer.sv
-  - axi_slice_wrap.sv
+  - src/axi_single_slice.sv
+  - src/axi_ar_buffer.sv
+  - src/axi_aw_buffer.sv
+  - src/axi_b_buffer.sv
+  - src/axi_r_buffer.sv
+  - src/axi_slice.sv
+  - src/axi_w_buffer.sv
+  - src/axi_slice_wrap.sv

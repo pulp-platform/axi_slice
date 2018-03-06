@@ -10,14 +10,12 @@
 
 // Davide Rossi <davide.rossi@unibo.it>
 
-module axi_w_buffer
-#(
-    parameter DATA_WIDTH   = 64,
-    parameter USER_WIDTH   = 6,
-    parameter BUFFER_DEPTH = 2,
-    parameter STRB_WIDTH   = DATA_WIDTH/8   // DO NOT OVERRIDE
-)
-(
+module axi_w_buffer #(
+    parameter int DATA_WIDTH   = -1,
+    parameter int USER_WIDTH   = -1,
+    parameter int BUFFER_DEPTH = -1,
+    parameter int STRB_WIDTH   = DATA_WIDTH/8   // DO NOT OVERRIDE
+)(
     input logic                   clk_i,
     input logic                   rst_ni,
     input logic                   test_en_i,
@@ -37,29 +35,21 @@ module axi_w_buffer
     input  logic                  master_ready_i
 );
 
-   logic [DATA_WIDTH+STRB_WIDTH+USER_WIDTH:0] s_data_in;
-   logic [DATA_WIDTH+STRB_WIDTH+USER_WIDTH:0] s_data_out;
+    logic [DATA_WIDTH+STRB_WIDTH+USER_WIDTH:0] s_data_in;
+    logic [DATA_WIDTH+STRB_WIDTH+USER_WIDTH:0] s_data_out;
 
-   assign s_data_in = { slave_user_i,  slave_strb_i,  slave_data_i,  slave_last_i  };
-   assign             { master_user_o, master_strb_o, master_data_o, master_last_o } = s_data_out;
+    assign s_data_in = { slave_user_i,  slave_strb_i,  slave_data_i,  slave_last_i  };
+    assign             { master_user_o, master_strb_o, master_data_o, master_last_o } = s_data_out;
 
-
-   generic_fifo
-   #(
-      .DATA_WIDTH ( 1+DATA_WIDTH+STRB_WIDTH+USER_WIDTH ),
-      .DATA_DEPTH ( BUFFER_DEPTH          )
-   )
-   buffer_i
-   (
-      .clk           ( clk_i           ),
-      .rst_n         ( rst_ni          ),
-      .data_i        ( s_data_in       ),
-      .valid_i       ( slave_valid_i   ),
-      .grant_o       ( slave_ready_o   ),
-      .data_o        ( s_data_out      ),
-      .valid_o       ( master_valid_o  ),
-      .grant_i       ( master_ready_i  ),
-      .test_mode_i   ( test_en_i       )
-   );
-
+    axi_single_slice #(.BUFFER_DEPTH(BUFFER_DEPTH), .DATA_WIDTH(1+DATA_WIDTH+STRB_WIDTH+USER_WIDTH)) i_axi_single_slice (
+      .clk_i      ( clk_i          ),
+      .rst_ni     ( rst_ni         ),
+      .testmode_i ( test_en_i      ),
+      .valid_i    ( slave_valid_i  ),
+      .ready_o    ( slave_ready_o  ),
+      .data_i     ( s_data_in      ),
+      .ready_i    ( master_ready_i ),
+      .valid_o    ( master_valid_o ),
+      .data_o     ( s_data_out     )
+    );
 endmodule

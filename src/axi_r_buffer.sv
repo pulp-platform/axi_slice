@@ -10,15 +10,13 @@
 
 // Davide Rossi <davide.rossi@unibo.it>
 
-module axi_r_buffer
-#(
+module axi_r_buffer #(
    parameter ID_WIDTH      = 4,
    parameter DATA_WIDTH    = 64,
    parameter USER_WIDTH    = 6,
    parameter BUFFER_DEPTH  = 8,
    parameter STRB_WIDTH    = DATA_WIDTH/8   // DO NOT OVERRIDE
-)
-(
+)(
    input logic                   clk_i,
    input logic                   rst_ni,
    input logic                   test_en_i,
@@ -47,24 +45,16 @@ module axi_r_buffer
    assign s_data_in =  {slave_id_i,  slave_user_i,  slave_data_i,  slave_resp_i,  slave_last_i};
    assign              {master_id_o, master_user_o, master_data_o, master_resp_o, master_last_o} = s_data_out;
 
-
-   generic_fifo
-   #(
-      .DATA_WIDTH ( 3+DATA_WIDTH+USER_WIDTH+ID_WIDTH ),
-      .DATA_DEPTH ( BUFFER_DEPTH                     )
-   )
-   buffer_i
-   (
-      .clk           ( clk_i           ),
-      .rst_n         ( rst_ni          ),
-      .data_i        ( s_data_in       ),
-      .valid_i       ( slave_valid_i   ),
-      .grant_o       ( slave_ready_o   ),
-      .data_o        ( s_data_out      ),
-      .valid_o       ( master_valid_o  ),
-      .grant_i       ( master_ready_i  ),
-      .test_mode_i   ( test_en_i       )
+   axi_single_slice #(.BUFFER_DEPTH(BUFFER_DEPTH), .DATA_WIDTH(3+DATA_WIDTH+USER_WIDTH+ID_WIDTH)) i_axi_single_slice (
+     .clk_i      ( clk_i          ),
+     .rst_ni     ( rst_ni         ),
+     .testmode_i ( test_en_i      ),
+     .valid_i    ( slave_valid_i  ),
+     .ready_o    ( slave_ready_o  ),
+     .data_i     ( s_data_in      ),
+     .ready_i    ( master_ready_i ),
+     .valid_o    ( master_valid_o ),
+     .data_o     ( s_data_out     )
    );
-
 
 endmodule
