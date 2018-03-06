@@ -2,7 +2,7 @@ package:
   name: axi_slice
 
 dependencies:
-  common_cells: { git: "git@iis-git.ee.ethz.ch:sasa/common_cells.git", version: 1.0.0 }
+  common_cells: { git: "git@iis-git.ee.ethz.ch:sasa/common_cells.git", version: 1.1.0 }
 
 sources:
   - src/axi_single_slice.sv
