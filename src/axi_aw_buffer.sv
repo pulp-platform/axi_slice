@@ -29,6 +29,7 @@ module axi_aw_buffer #(
     input  logic [2:0]            slave_size_i,
     input  logic [1:0]            slave_burst_i,
     input  logic                  slave_lock_i,
+    input  logic [5:0]            slave_atop_i,
     input  logic [3:0]            slave_cache_i,
     input  logic [3:0]            slave_qos_i,
     input  logic [ID_WIDTH-1:0]   slave_id_i,
@@ -43,6 +44,7 @@ module axi_aw_buffer #(
     output logic [2:0]            master_size_o,
     output logic [1:0]            master_burst_o,
     output logic                  master_lock_o,
+    output logic [5:0]            master_atop_o,
     output logic [3:0]            master_cache_o,
     output logic [3:0]            master_qos_o,
     output logic [ID_WIDTH-1:0]   master_id_o,
@@ -50,16 +52,18 @@ module axi_aw_buffer #(
     input  logic                  master_ready_i
 );
 
-   logic [29+ADDR_WIDTH+USER_WIDTH+ID_WIDTH-1:0] s_data_in;
-   logic [29+ADDR_WIDTH+USER_WIDTH+ID_WIDTH-1:0] s_data_out;
+   localparam int unsigned DATA_WIDTH = 29+6+ADDR_WIDTH+USER_WIDTH+ID_WIDTH;
+
+   logic [DATA_WIDTH-1:0] s_data_in;
+   logic [DATA_WIDTH-1:0] s_data_out;
 
 
 
-   assign s_data_in = {slave_cache_i,  slave_prot_i,  slave_lock_i,  slave_burst_i,  slave_size_i,  slave_len_i,  slave_qos_i,  slave_region_i,  slave_addr_i,  slave_user_i,  slave_id_i};
-   assign             {master_cache_o, master_prot_o, master_lock_o, master_burst_o, master_size_o, master_len_o, master_qos_o, master_region_o, master_addr_o, master_user_o, master_id_o} = s_data_out;
+   assign s_data_in = {slave_cache_i,  slave_prot_i,  slave_lock_i,  slave_atop_i,  slave_burst_i,  slave_size_i,  slave_len_i,  slave_qos_i,  slave_region_i,  slave_addr_i,  slave_user_i,  slave_id_i};
+   assign             {master_cache_o, master_prot_o, master_lock_o, master_atop_o, master_burst_o, master_size_o, master_len_o, master_qos_o, master_region_o, master_addr_o, master_user_o, master_id_o} = s_data_out;
 
 
-    axi_single_slice #(.BUFFER_DEPTH(BUFFER_DEPTH), .DATA_WIDTH(29+ADDR_WIDTH+USER_WIDTH+ID_WIDTH)) i_axi_single_slice (
+    axi_single_slice #(.BUFFER_DEPTH(BUFFER_DEPTH), .DATA_WIDTH(DATA_WIDTH)) i_axi_single_slice (
       .clk_i      ( clk_i          ),
       .rst_ni     ( rst_ni         ),
       .testmode_i ( test_en_i      ),
