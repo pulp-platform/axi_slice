@@ -37,7 +37,13 @@ module axi_single_slice #(
     ) i_fifo (
         .clk_i      ( clk_i             ),
         .rst_ni     ( rst_ni            ),
+`ifdef _VCP // PAK2591
+        .flush_i    (ariane_pkg::ALDEC_1B0),
+
+`else
         .flush_i    ( 1'b0              ),
+
+`endif
         .threshold_o (), // NC
         .testmode_i ( testmode_i        ),
         .full_o     ( full              ),
